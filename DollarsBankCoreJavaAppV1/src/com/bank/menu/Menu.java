@@ -1,6 +1,7 @@
 package com.bank.menu;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.bank.customer.Customer;
 import com.bank.account.Account;
@@ -54,10 +55,6 @@ public class Menu {
 					if(response1.equals("Yes")||response1.equals("No")) {
 						break;
 					}
-					else {
-						System.out.println("Invalid. Please choose either Yes or No!");
-						continue;
-					}
 					
 				}
 				
@@ -108,8 +105,7 @@ public class Menu {
 	
 	public static void Deposit(Customer customer) {
 		while(true) {
-			System.out.println("Enter deposit amount: ");
-			Double amount = Double.valueOf(scanner.next());
+			Double amount = confirmDouble();
 			String type = null;
 			while(true) {
 				System.out.println("Enter account type: (Checking Or Savings)");
@@ -145,6 +141,24 @@ public class Menu {
 		
 	}
 	
+	public static Double confirmDouble() {
+		Double temp = null;
+		while(true) {
+			System.out.println("Enter deposit amount: ");
+			try {
+				temp = Double.parseDouble(scanner.next());
+			}
+			catch(NumberFormatException e) {
+			}
+			if(temp==null) {
+				System.out.println("Enter a number!");
+				continue;
+			}
+			else break;
+		}
+		return temp;
+	}
+	
 	public static void Withdrawal(Customer customer) {
 		while(true) {
 			System.out.println("Enter withdrawal amount: ");
@@ -165,14 +179,16 @@ public class Menu {
 			for(int i = 0; i < customer.getCustomerAccounts().size(); i++) {
 				if(customer.getCustomerAccounts().get(i).getName().equals(accountName)&&customer.getCustomerAccounts().get(i).getId()==(customer.getCustomerId())) {
 					while(!customer.getCustomerAccounts().get(i).Withdrawal(amount)) {
+						System.out.println("Enter a smaller amount!");
 						amount = Double.valueOf(scanner.next());
+						
 					};
 				}
 			}
 			String answer = null;
 			while(true) {
 				System.out.println("Withdraw from another account? ");
-				answer = scanner.nextLine();
+				answer = scanner.next();
 				if(answer.equals("Yes")||answer.equals("No"))
 					break;
 			}
