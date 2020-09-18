@@ -144,7 +144,7 @@ public class Menu {
 	public static Double confirmDouble() {
 		Double temp = null;
 		while(true) {
-			System.out.println("Enter deposit amount: ");
+			System.out.println("Enter amount: ");
 			try {
 				temp = Double.parseDouble(scanner.next());
 			}
@@ -161,8 +161,7 @@ public class Menu {
 	
 	public static void Withdrawal(Customer customer) {
 		while(true) {
-			System.out.println("Enter withdrawal amount: ");
-			Double amount = Double.valueOf(scanner.next());
+			Double amount = confirmDouble();
 			String type = null;
 			while(true) {
 				System.out.println("Enter account type: (Checking Or Savings)");
@@ -180,7 +179,7 @@ public class Menu {
 				if(customer.getCustomerAccounts().get(i).getName().equals(accountName)&&customer.getCustomerAccounts().get(i).getId()==(customer.getCustomerId())) {
 					while(!customer.getCustomerAccounts().get(i).Withdrawal(amount)) {
 						System.out.println("Enter a smaller amount!");
-						amount = Double.valueOf(scanner.next());
+						amount = confirmDouble();
 						
 					};
 				}
@@ -206,15 +205,37 @@ public class Menu {
 			String to = null;
 			Double amount = 0.0;
 			while(true) {
-				System.out.println("Enter transfer amount: ");
-				amount = scanner.nextDouble();
+				amount = confirmDouble();
 				System.out.println("Transfer from: (Checking Or Savings)");
 				from = scanner.next();
-				System.out.println("Transfer to: (Checking or Savings");
+				System.out.println("Transfer to: (Checking or Savings)");
 				to = scanner.next();
-				if(to.equals(from))
-					continue;
-				if((from.equals("Checking")||from.equals("Saving"))&&(to.equals("Checking")||to.equals("Saving"))) 
+				if(to.equals(from)) {
+					System.out.println("Accounts must be different!");
+					continue;	
+				}
+				if(customer.accountNames.contains("Checking")&&!customer.accountNames.contains("Savings")||customer.accountNames.contains("Savings")&&!customer.accountNames.contains("Checking")) {
+					System.out.println("One or more accounts might not exist!");
+					String answer = null;
+					while(true) {
+						System.out.println("Exit? (Yes or No)");
+						answer = scanner.next();
+						if(answer.equals("Yes")||answer.equals("No")) {
+							break;
+						}
+						else {
+							System.out.println("Invalid. Please choose either Yes or No!");
+							continue;
+						}
+						
+					}
+					if(answer.equals("Yes")) {
+						break;
+					}
+					else continue;
+				
+				}
+				if((from.equals("Checking")&&to.equals("Savings"))||(to.equals("Checking")&&from.equals("Savings"))) 
 					break;
 				
 			}
@@ -293,9 +314,10 @@ public class Menu {
 			System.out.println("Phone Number: " + customer.getPhoneNumber());
 			System.out.println("Accounts: ");
 			for(int i = 0; i< customer.getCustomerAccounts().size();i++) {
-				System.out.println(customer.getCustomerAccounts().get(i).getId());
-				System.out.println(customer.getCustomerAccounts().get(i).getName());
-				System.out.println(customer.getCustomerAccounts().get(i).getBalance());
+			System.out.println("-------------------------------------------------------------------------------------------------");
+			System.out.println(customer.getCustomerAccounts().get(i).getId());
+			System.out.println(customer.getCustomerAccounts().get(i).getName());
+			System.out.println(customer.getCustomerAccounts().get(i).getBalance());
 
 			}
 			String answer = null;

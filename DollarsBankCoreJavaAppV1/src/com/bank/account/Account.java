@@ -72,7 +72,7 @@ public class Account {
 				this.balance = this.balance - amount;
 				account.Deposit(amount);
 				System.out.println("Successfully transferred");
-				String statement = "Transferred " + amount + " from " + this.Name + " to " + account.getName();
+				String statement = "Transferred " + amount + " from " + this.Name + " to " + account.getName() + "Balance is now " + this.balance;
 				transactionHistory.add(0, statement);
 				System.out.println(statement);
 
