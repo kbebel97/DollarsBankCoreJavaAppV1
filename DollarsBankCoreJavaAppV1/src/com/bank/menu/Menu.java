@@ -347,9 +347,11 @@ public class Menu {
 			System.out.println("Enter your last Name: ");
 			String last = scanner.next();
 			System.out.println("Enter your address: ");
-			String address = scanner.next();
+			String address = scanner.nextLine();
+			scanner.nextLine();
 			System.out.println("Enter a phoneNumber: ");
 			String phoneNumber = scanner.next();
+			scanner.nextLine();
 			System.out.println("Enter a Username: ");
 			String userName = scanner.next();
 			System.out.println("Enter a password : ");
