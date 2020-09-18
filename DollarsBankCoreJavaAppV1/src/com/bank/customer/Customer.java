@@ -1,5 +1,6 @@
 package com.bank.customer;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.bank.account.Account;
 
@@ -7,7 +8,11 @@ public class Customer {
 	
 	public static long Id = 1;
 	
+	private int numaccounts;
+	
 	private long customerId;
+	
+	public HashSet<String> accountNames;
 	
 	public static ArrayList<Customer> customers = new ArrayList<Customer>();
 	
@@ -21,16 +26,20 @@ public class Customer {
 	
 	private String password;
 	
-	private Double initialDeposit;
+	
+	private String userName;
 	
 
-	public Customer(String customerName, String address, String phoneNumber, String password) {
+	public Customer(String customerName, String address, String phoneNumber, String userName, String password) {
 		this.customerName = customerName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.userName = userName;
 		this.password = password;
 		this.customerId = Id++;
 		this.accounts = new ArrayList<Account>();
+		this.numaccounts = 0;
+		this.accountNames = new HashSet<String>();
 	}
 	
 	public void createAccount(String type, Double deposit) {
@@ -58,6 +67,16 @@ public class Customer {
 	public String getPassword() {
 		return this.password;
 	}
+	public int getNumAccounts() {
+		return this.numaccounts;
+	}
+	public void increaseNumAccounts() {
+		this.numaccounts++;
+	}
+	
+	public void decreaseNumAccounts() {
+		this.numaccounts--;
+	}
 	
 	public String getCustomerName() {
 		return this.customerName;
@@ -65,6 +84,10 @@ public class Customer {
 	
 	public String getCustomerAddress() {
 		return this.address;
+	}
+	
+	public String getUserName() {
+		return this.userName;
 	}
 	
 	public String getPhoneNumber() {

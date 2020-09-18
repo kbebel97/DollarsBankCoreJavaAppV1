@@ -35,13 +35,13 @@ public class Menu {
 	
 	public static void Login() {
 		while(true) {
-			System.out.println("Enter Id:");
-			Long Id = Long.valueOf(scanner.next());
+			System.out.println("Enter Username:");
+			String userName = scanner.next();
 			System.out.println("Enter Password:");
 			String password = scanner.next();
 			Customer customer = null;
 			for(int i = 0; i < Customer.customers.size(); i++) {
-				if(Customer.customers.get(i).getCustomerId()==Id && Customer.customers.get(i).getPassword().equals(password)){
+				if(Customer.customers.get(i).getUserName().equals(userName) && Customer.customers.get(i).getPassword().equals(password)){
 					customer = Customer.customers.get(i);
 					customerMenu(customer);			
 				}	
@@ -53,6 +53,10 @@ public class Menu {
 					response1 = scanner.next();
 					if(response1.equals("Yes")||response1.equals("No")) {
 						break;
+					}
+					else {
+						System.out.println("Invalid. Please choose either Yes or No!");
+						continue;
 					}
 					
 				}
@@ -110,8 +114,10 @@ public class Menu {
 			while(true) {
 				System.out.println("Enter account type: (Checking Or Savings)");
 				type = scanner.next();
-				if(type.equals("Checking")||type.equals("Saving"))
+				if(type.equals("Checking")||type.equals("Savings"))
 					break;
+				else {System.out.println("Invalid. Please choose either a Checking or Savings account!");
+						continue;}
 			}
 			String accountName = customer.getCustomerName() + "'s " + type + " account";
 			for(int i = 0; i < customer.getCustomerAccounts().size(); i++) {
@@ -126,11 +132,14 @@ public class Menu {
 				if(answer.equals("Yes")||answer.equals("No")) {
 					break;
 				}
+				else {System.out.println("Invalid. Please choose either Yes or No!");}
 			}
 			if(answer.equals("Yes")) {
 				continue;
 			}
-			else break;
+			else if(answer.equals("No")) {
+				break;
+			}
 		
 		}
 		
@@ -139,20 +148,24 @@ public class Menu {
 	public static void Withdrawal(Customer customer) {
 		while(true) {
 			System.out.println("Enter withdrawal amount: ");
-			Double amount = Double.valueOf(scanner.nextDouble());
+			Double amount = Double.valueOf(scanner.next());
 			String type = null;
 			while(true) {
 				System.out.println("Enter account type: (Checking Or Savings)");
 				type = scanner.next();
-				if(type.equals("Checking")||type.equals("Saving")) {
+				if(type.equals("Checking")||type.equals("Savings")) {
 					break;
+				}
+				else {
+					System.out.println("Invalid. Please choose either a Checking or Savings account!");
+					continue;
 				}
 			}
 			String accountName = customer.getCustomerName() + "'s " + type + " account";
 			for(int i = 0; i < customer.getCustomerAccounts().size(); i++) {
 				if(customer.getCustomerAccounts().get(i).getName().equals(accountName)&&customer.getCustomerAccounts().get(i).getId()==(customer.getCustomerId())) {
 					while(!customer.getCustomerAccounts().get(i).Withdrawal(amount)) {
-						amount = scanner.nextDouble();
+						amount = Double.valueOf(scanner.next());
 					};
 				}
 			}
@@ -220,8 +233,12 @@ public class Menu {
 			while(true) {
 				System.out.println("Enter account type: (Checking Or Savings)");
 				type = scanner.next();
-				if(type.equals("Checking")||type.equals("Saving"))
+				if(type.equals("Checking")||type.equals("Savings"))
 					break;
+				else {
+					System.out.println("Invalid. Please choose either a Checking or Savings account!");
+					continue;
+				}
 			}
 			String accountName = customer.getCustomerName() + "'s " + type + " account";
 			for(int i = 0; i< customer.getCustomerAccounts().size(); i++) {
@@ -238,6 +255,10 @@ public class Menu {
 				answer = scanner.next();
 				if(answer.equals("Yes")||answer.equals("No")) 
 					break;
+				else {
+					System.out.println("Invalid. Please choose either Yes or No!");
+					continue;
+				}
 				
 			}
 			if(answer.equals("Yes")) {
@@ -250,20 +271,27 @@ public class Menu {
 	public static void displayCustomerInfo(Customer customer) {
 		while(true) {
 			System.out.println("ID: " + customer.getCustomerId());
+			System.out.println("Username: " + customer.getUserName());
 			System.out.println("Name: " + customer.getCustomerName());
 			System.out.println("Address: " + customer.getCustomerAddress());
 			System.out.println("Phone Number: " + customer.getPhoneNumber());
 			System.out.println("Accounts: ");
 			for(int i = 0; i< customer.getCustomerAccounts().size();i++) {
-//				System.out.println(customer.getCustomerAccounts().get(i).getBalance());
-				System.out.println(customer.getCustomerAccounts().get(i).toString());
+				System.out.println(customer.getCustomerAccounts().get(i).getId());
+				System.out.println(customer.getCustomerAccounts().get(i).getName());
+				System.out.println(customer.getCustomerAccounts().get(i).getBalance());
+
 			}
 			String answer = null;
 			while(true) {
 				System.out.println("Exit? ");
-				answer = scanner.nextLine();
+				answer = scanner.next();
 				if(answer.equals("Yes")||answer.equals("No")) {
 					break;
+				}
+				else {
+					System.out.println("Invalid. Please choose either Yes or No!");
+					continue;
 				}
 			}
 			if(answer.equals("Yes")) 
@@ -274,6 +302,7 @@ public class Menu {
 	}
 	
 	public static void createAccount() {
+		
 		while(true) {
 			System.out.println("Enter your first Name: ");
 			String first = scanner.next();
@@ -283,34 +312,68 @@ public class Menu {
 			String address = scanner.next();
 			System.out.println("Enter a phoneNumber: ");
 			String phoneNumber = scanner.next();
+			System.out.println("Enter a Username: ");
+			String userName = scanner.next();
 			System.out.println("Enter a password : ");
 			String password = scanner.next();
 			
 			String name = first + " " + last;
-			Customer customer = new Customer(name, address, phoneNumber, password);
+			Customer customer = new Customer(name, address, phoneNumber, userName, password);
 			Customer.customers.add(customer);
 			String accountType = null;
 			while(true) {
-				System.out.println("Account you would like to open? (Checking or Saving)");
+				System.out.println("Account you would like to open? (Checking or Savings)");
 				accountType = scanner.next();
-				if(accountType.equals("Checking")||accountType.equals("Saving")) {
+				
+				if(accountType.equals("Checking")||accountType.equals("Savings")) {						
 					Double deposit = 0.0;
+					if(customer.accountNames.contains(accountType)) {
+						System.out.println("Account already exists! ");
+						continue;
+					}
 					while(true) {
 						System.out.println("Initial Deposit: ");
 						deposit = Double.valueOf(scanner.next());
 						if(deposit > 100.00) {
 							break;
 						}
+						else {
+							System.out.println("Initial Deposit must be over $100.00!");
+							continue;
+						}
 					}
-					customer.createAccount(accountType, deposit);	
+					customer.createAccount(accountType, deposit);
+					customer.increaseNumAccounts();
+					customer.accountNames.add(accountType);
 				}
-				System.out.println("Would you like to add another account? (Yes or No) ");
-				String answer = scanner.next();
+				else {
+					System.out.println("Invalid. Please enter either a Checking or Savings account!");
+					continue;
+				}
+				String answer = null;
+				while(true) {
+					System.out.println("Would you like to add another account? (Yes or No) ");
+					answer = scanner.next();
+					if(answer.equals("Yes")||answer.equals("No")){
+						break;
+					}
+					else {
+						System.out.println("Invalid. Please choose either Yes or No!");
+					}
+				}
+			
+				if(answer.equals("Yes")&&customer.getNumAccounts()==2) {
+					System.out.println("No more than 2 accounts per Customer!");
+					break;
+				}
 				if(answer.equals("Yes")) {
 					continue;
 				}
-				else break;
-			}break;				
+				else if(answer.equals("No")) {
+					break;
+				};
+			}
+			break;
 		}
 	}
 }
